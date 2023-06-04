@@ -1,0 +1,134 @@
+**In this project We can identify which ML model is good for our dataset.**
+# Importing required libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+
+# Load the data
+data=pd.read_csv(r"C:\Users\anikbakr\Desktop\My Data\AIML\My Projects\ML_IBM Employee Attrition\WA_Fn-UseC_-HR-Employee-Attrition.csv")
+data.set_index("EmployeeNumber", inplace=True)
+
+# Explore the data
+data.head()
+data.isnull().sum()
+data.duplicated().sum()
+
+# Prepare the data for modeling
+X=data.drop(["Attrition"],axis=1)
+y=data.Attrition
+
+# Visualize the data
+# Visualize the null data Or check the null data
+plt.subplots(figsize=(20, 6))
+sns.heatmap(data.isnull(),yticklabels=False)
+
+# Plot histographs for each column in dataset(data)
+data.hist(figsize=(20,20))
+plt.show()
+
+# Identify column types
+types=data.columns.to_series().groupby(data.dtypes).groups
+types
+
+# Identify columns with object (categorical) data
+col=data.columns
+col_obj=[]
+for i in col:
+    if data[i].dtypes=="object":
+        col_obj.append(i)
+len(col_obj)
+
+# Visualize categorical data
+plt.boxplot(X.MonthlyIncome)
+plt.boxplot(X.DistanceFromHome)
+
+import seaborn as sns
+# Making countplot 1
+sns.set_style('white')
+sns.countplot(x='Attrition',hue='JobRole',data=data, palette='plasma')
+# Making countplot 2
+sns.set_style('white')
+sns.countplot(x='Attrition',hue='Department',data=data, palette='plasma')
+# Making countplot 3
+sns.set_style('whitegrid')
+sns.countplot(x='Attrition',hue='EducationField',data=data, palette='plasma')
+# Making countplot 4
+sns.set_style('whitegrid')
+sns.countplot(x='Attrition',hue='Gender',data=data,palette='plasma')
+# Making countplot 5
+sns.countplot(x='Attrition',hue='MaritalStatus',data=data,palette='plasma')
+# Making countplot 6
+sns.countplot(x='Attrition',hue='OverTime',data=data)
+
+# Check skewness of numerical features
+skew1=data.skew()
+skew_feas=[]
+for column_name, i in skew1.items():
+    if abs(i) > 0.9:
+        skew_feas.append(column_name)
+skew_feas
+
+# Apply square root transformation to skewed features
+X[skew_feas].skew()
+X[skew_feas]=np.sqrt(X[skew_feas])
+X[skew_feas].skew()
+
+# Encode categorical features
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder
+LE=LabelEncoder()
+le_count=0
+for col in X.columns[:]:
+    if X[col].dtype=='object':
+        list(X[col].unique())
+        LE.fit(X[col])
+        X[col]=LE.transform(X[col])
+        le_count+=1
+print(f"{le_count} columns where label encoded")
+
+# Split the data into training and testing sets
+from sklearn.model_selection import train_test_split
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2, random_state=50)
+X_train.shape, X_test.shape
+
+# Define the models for classification
+models=[]
+models.append(('Logistic Regression', LogisticRegression(solver='liblinear', random_state=50)))
+models.append(('Random Forest', RandomForestClassifier(n_estimators=100, random_state=50)))
+models.append(('SVM', SVC(gamma='auto', random_state=50)))
+models.append(('KNN', KNeighborsClassifier()))
+models.append(('Decision Tree', DecisionTreeClassifier(random_state=7)))
+models.append(('Gaussian NB', GaussianNB()))
+
+# Evaluate the models using cross-validation
+acc_results=[]
+auc_results=[]
+names=[]
+
+col=['Algorithm','ROC AUC Mean', 'ROC AUC STD', 'Accuracy Mean', 'Accuracy STD']
+df_results=pd.DataFrame(columns=col)
+
+i=0
+for name, model in models:
+    kfold=model_selection.KFold(n_splits=10,random_state=50,shuffle=True)
+    cv_acc_results=model_selection.cross_val_score(model,X_train,y_train, cv=kfold, scoring='accuracy')
+    cv_auc_results=model_selection.cross_val_score(model,X_train,y_train, cv=kfold, scoring='roc_auc')
+    acc_results.append(cv_acc_results)
+    auc_results.append(cv_auc_results)
+    names.append(name)
+    df_results.loc[i]=[name,
+                        round(cv_auc_results.mean()*100,2),
+                        round(cv_auc_results.std()*100,2),
+                        round(cv_acc_results.mean()*100,2),
+                        round(cv_acc_results.std()*100,2)
+                       ]
+    i+=1
+
+# Display the results
+df_results.sort_values(by=['ROC AUC Mean'],ascending=False)
+
+# Visualize the performance of the models
+fig=plt.figure(figsize=(10,10))
+plt.boxplot(acc_results,labels=names)
+plt.show()
