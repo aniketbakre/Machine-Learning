@@ -1,5 +1,11 @@
-# ML_Employee-Attrition-IBM_Identify-The-Best-Model
-Summary:
+**Project: ML_Employee-Attrition-IBM_Identify-The-Best-Model**
+**Purpose:**
+The purpose of the above machine learning project is to predict employee attrition. Employee attrition refers to the phenomenon of employees leaving an organization voluntarily or involuntarily. Predicting attrition can be valuable for organizations as it allows them to identify factors and patterns that contribute to employee turnover. By understanding these factors, organizations can take proactive measures to improve employee satisfaction, engagement, and retention.
+
+**Key Feature:**
+This project is to develop and evaluate machine learning models that can accurately predict employee attrition. By identifying the factors that contribute to attrition and leveraging these predictive models, organizations can take proactive measures to reduce employee turnover, improve employee satisfaction, and maintain a stable workforce.
+
+**Summary:**
 
 1. Import the required libraries for data analysis and visualization, including NumPy, pandas, Matplotlib, and Seaborn.
 2. Read the dataset using `pd.read_csv()` function and set the index of the DataFrame to "EmployeeNumber" using `data.set_index()`.
