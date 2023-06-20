@@ -1,0 +1,41 @@
+# If We want to plot Histograms using matplotlib
+
+# Step 1: Import the necessary libraries
+import matplotlib.pyplot as plt
+
+# Step 2: Define the data
+algorithms = ['Logistic Regression', 'Random Forest', 'Gaussian NB', 'KNN', 'SVM', 'Decision Tree']
+roc_auc_mean = [84.61, 83.97, 83.29, 80.86, 75.45, 71.49]
+accuracy_mean = [78.41, 79.19, 68.85, 75.48, 73.74, 74.67]
+
+# Step 3: Create the first histogram for ROC AUC Mean
+fig, ax = plt.subplots()
+
+# Step 4: Plot the histogram for ROC AUC Mean
+ax.bar(algorithms, roc_auc_mean)
+
+# Step 5: Set labels and title for the first histogram
+ax.set_ylabel('ROC AUC Mean')
+ax.set_title('ROC AUC Mean by Algorithm')
+ax.set_xticklabels(algorithms, rotation='vertical')
+ax.grid(axis='y')
+
+# Step 6: Display the first histogram
+plt.tight_layout()
+plt.show()
+
+# Step 7: Create the second histogram for Accuracy Mean
+fig, ax = plt.subplots()
+
+# Step 8: Plot the histogram for Accuracy Mean
+ax.bar(algorithms, accuracy_mean)
+
+# Step 9: Set labels and title for the second histogram
+ax.set_ylabel('Accuracy Mean')
+ax.set_title('Accuracy Mean by Algorithm')
+ax.set_xticklabels(algorithms, rotation='vertical')
+ax.grid(axis='y')
+
+# Step 10: Display the second histogram
+plt.tight_layout()
+plt.show()
