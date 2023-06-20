@@ -61,6 +61,13 @@ ax.bar(np.arange(len(algorithms))-0.2, roc_auc_mean, width=0.4, label='ROC AUC M
 # Plot the histogram for Accuracy Mean
 ax.bar(np.arange(len(algorithms))+0.2, accuracy_mean, width=0.4, label='Accuracy Mean')
 
+# Add value labels to the top of each bar
+for i, v in enumerate(roc_auc_mean):
+    ax.text(i - 0.2, v + 0.5, str(v), color='black', ha='center')
+
+for i, v in enumerate(accuracy_mean):
+    ax.text(i + 0.2, v + 0.5, str(v), color='black', ha='center')
+
 # Set labels and title for the combined plot
 ax.set_ylabel('Scores')
 ax.set_title('Performance Metrics by Algorithm')
