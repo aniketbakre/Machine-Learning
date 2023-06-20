@@ -1,4 +1,6 @@
-# If We want to plot Histograms using matplotlib
+------------------------------------------------------------
+# If We want to plot Histograms using matplotlib (Separate)
+------------------------------------------------------------
 
 # Step 1: Import the necessary libraries
 import matplotlib.pyplot as plt
@@ -39,3 +41,34 @@ ax.grid(axis='y')
 # Step 10: Display the second histogram
 plt.tight_layout()
 plt.show()
+
+---------------------------------------------------------------
+# If We want to plot Histograms using matplotlib (combine)
+---------------------------------------------------------------
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+algorithms = ['Logistic Regression', 'Random Forest', 'Gaussian NB', 'KNN', 'SVM', 'Decision Tree']
+roc_auc_mean = [84.61, 83.97, 83.29, 80.86, 75.45, 71.49]
+accuracy_mean = [78.41, 79.19, 68.85, 75.48, 73.74, 74.67]
+
+fig, ax = plt.subplots()
+
+# Plot the histogram for ROC AUC Mean
+ax.bar(np.arange(len(algorithms))-0.2, roc_auc_mean, width=0.4, label='ROC AUC Mean')
+
+# Plot the histogram for Accuracy Mean
+ax.bar(np.arange(len(algorithms))+0.2, accuracy_mean, width=0.4, label='Accuracy Mean')
+
+# Set labels and title for the combined plot
+ax.set_ylabel('Scores')
+ax.set_title('Performance Metrics by Algorithm')
+ax.set_xticks(np.arange(len(algorithms)))
+ax.set_xticklabels(algorithms, rotation='vertical')
+ax.legend()
+
+# Display the combined plot
+plt.tight_layout()
+plt.show()
+
