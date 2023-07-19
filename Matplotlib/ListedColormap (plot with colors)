@@ -1,0 +1,25 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
+# List the colour accourding to set of the column.
+colour=np.array(["r","g","b","black","y"])
+
+# we have arrays x_test, y_test, and color
+
+# Convert y_test to an array of integers (if not already done)
+y_test = y_test.astype("int32")
+
+# Create a ListedColormap from the 'color' array
+cmap = ListedColormap(color)
+
+# Scatter plot with colors based on y_test (the labels)
+plt.scatter(x_test[:, 0], x_test[:, 4], c=y_test, cmap=cmap)
+plt.xlabel('Feature 0')
+plt.ylabel('Feature 4')
+plt.title('Scatter Plot with Color based on Labels')
+
+#using color bar for good understanding 
+
+plt.colorbar(label='Drug Labels')
+
+plt.show()
